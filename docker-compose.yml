@@ -6,7 +6,7 @@ services:
       - haproxy-net
     volumes:
       - ./nfs_share:/media  # Mount to /media inside the container
-      - ./exports.txt:/etc/exports:ro
+      - ./nfs_config/exports.txt:/etc/exports:ro
     cap_add:
       - SYS_ADMIN
     ports:
@@ -50,7 +50,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+      - ./haproxy_config/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
     depends_on:
       - webserver1
       - webserver2
