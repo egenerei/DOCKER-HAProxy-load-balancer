@@ -5,7 +5,7 @@ services:
     networks:
       - haproxy-net
     volumes:
-      - ./nfs_share:/media  # Mount to /media inside the container
+      - ./nfs_share:/media
       - ./nfs_config/exports.txt:/etc/exports:ro
     cap_add:
       - SYS_ADMIN
