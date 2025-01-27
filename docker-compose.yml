@@ -1,32 +1,27 @@
 services:
   nfs-server:
-    image: erichough/nfs-server
+    image: itsthenetwork/nfs-server-alpine:12
     container_name: nfs-server
-    networks:
-      - haproxy-net
+    restart: unless-stopped
+    privileged: true
+    environment:
+      - SHARED_DIRECTORY=/data
     volumes:
-      - ./nfs_share:/media
-      - ./nfs_config/exports.txt:/etc/exports:ro
-    cap_add:
-      - SYS_ADMIN
+      - ./nfs_share:/data
     ports:
-      - "2049:2049"
-      - "2049:2049/udp"
-      - "111:111"
-      - "111:111/udp"
-      - "32765:32765"
-      - "32765:32765/udp"
-      - "32767:32767"
-      - "32767:32767/udp"
-    restart: always
+      - "111:111" # rpcbind
+      - "2049:2049" # nfs
+      - "20048:20048" # nfsd
+    networks:
+      haproxy-net:
+        ipv4_address: 192.168.2.100
 
   webserver1:
     image: nginx
     container_name: webserver1
+    privileged: true
     networks:
       - haproxy-net
-    volumes:
-      - ./nfs_share:/usr/share/nginx/html
     depends_on:
       - nfs-server
     restart: always
@@ -34,10 +29,9 @@ services:
   webserver2:
     image: nginx
     container_name: webserver2
+    privileged: true
     networks:
       - haproxy-net
-    volumes:
-      - ./nfs_share:/usr/share/nginx/html
     depends_on:
       - nfs-server
     restart: always
@@ -59,3 +53,6 @@ services:
 networks:
   haproxy-net:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.2.0/24
