@@ -9,9 +9,9 @@ services:
     volumes:
       - ./nfs_share:/data
     ports:
-      - "111:111" # rpcbind
-      - "2049:2049" # nfs
-      - "20048:20048" # nfsd
+      - "111:111"
+      - "2049:2049"
+      - "20048:20048"
     networks:
       haproxy-net:
         ipv4_address: 192.168.2.100
