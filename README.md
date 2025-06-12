@@ -28,7 +28,7 @@ A Docker-based project that sets up HAProxy as a powerful load balancer to distr
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/yourusername/docker-haproxy-load-balancer.git
+   git clone https://github.com/egenerei/docker-haproxy-load-balancer.git
    cd docker-haproxy-load-balancer
    ```
 2. Customize the `haproxy.cfg` if needed (see **Configuration** below). 🖊️
